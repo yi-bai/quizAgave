@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SharePointSiteUrl>http://hqgsv2x/</SharePointSiteUrl>
+    <GeneratedFeatureId>cf095b7f-f43d-481d-a05a-df6a58c3d357</GeneratedFeatureId>
+    <GeneratedPackageId>f0da0ad7-fc60-4e90-9fd0-fd783052b109</GeneratedPackageId>
+    <GeneratedModuleId>{a69530dc-960d-4952-983e-23c15096f3d4}</GeneratedModuleId>
+    <GeneratedListId>{df03a8ec-563b-44ed-88f3-58e82ce2abf2}</GeneratedListId>
+    <GeneratedProductId>{e287330f-2632-4ca8-92a9-186dc649b451}</GeneratedProductId>
+    <GeneratedAppVersion>1.0.0.0</GeneratedAppVersion>
+    <GeneratedClientSecret>ffCiNdvvPgz4sDMTJ0Jt+D/T1Mppg54Iq4VzzOOje9c=</GeneratedClientSecret>
+  </PropertyGroup>
+</Project>

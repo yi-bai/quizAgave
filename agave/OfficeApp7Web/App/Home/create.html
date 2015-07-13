@@ -1,0 +1,135 @@
+﻿<!doctype html>
+<html ng-app="createQuizApp">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <title></title>
+    <script src="../../Scripts/jquery-1.9.1.js" type="text/javascript"></script>
+
+    <link href="../../Content/Office.css" rel="stylesheet" type="text/css" />
+    <script src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js" type="text/javascript"></script>
+
+    <link href="../App.css" rel="stylesheet" type="text/css" />
+    <script src="../App.js" type="text/javascript"></script>
+
+    <script src="../../bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="../../bootstrap/css/bootstrap.min.css">
+    <script src="../../Scripts/angularjs.js"></script>
+    <script src="create.js"></script>
+</head>
+<body ng-controller="step1controller">
+    <div style="width:80%;position:absolutely;margin-left:auto;margin-right:auto;" ng-show="step==1">
+        <div ng-repeat="question in questions" ng-init="questionIndex = $index">
+            <table style="width:100%">
+                <tr>
+                    <td ng-show="questions.length > 1"><h3>Question #{{$index+1}}</h3></td>
+                    <td>
+                        <div style="float:right;" class="btn-group" role="group">
+                            <button ng-click="setQuestionType(questionIndex,'single')" type="button" class="btn btn-default btn-sm" ng-class="{active:question.type == 'single'}">Single</button>
+                            <button ng-click="setQuestionType(questionIndex,'multi')" type="button" class="btn btn-default btn-sm" ng-class="{active:question.type == 'multi'}">Multiple</button>
+                            <button ng-click="setQuestionType(questionIndex,'input')" type="button" class="btn btn-default btn-sm" ng-class="{active:question.type == 'input'}">Input</button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+
+
+
+
+            <div class="form-group">
+                <input class="form-control" ng-model="question.description" />
+                <button class="btn btn-default btn-xs" ng-click="updateQuestionDescriptionBySelectedData(questionIndex)">Paste from Highlight</button>
+            </div>
+
+            <div ng-show="question.type == 'single'">
+                <table class="table table-condensed">
+                    <tr ng-repeat="(i, choice) in question.choices track by $index" ng-class='{success:question.answers[$index]}'>
+                        <td width="5%">{{$index | indexToCharacter}}</td>
+                        <td><input class="form-control input-sm" ng-model="question.choices[$index]" /></td>
+                        <td>
+                            <div style="float:right;">
+                                <button class="btn btn-default btn-xs" ng-click="setSingleCorrectAnswer(questionIndex, $index)">Set as correct</button>
+                                <button class="btn btn-default btn-xs" ng-click="deleteChoice(questionIndex, $index)">Delete choice</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div style="float:right;">
+                                <button class="btn btn-default btn-xs" ng-click="addChoice(questionIndex)">Add choice</button> <button ng-show="questions.length > 1" class="btn btn-danger btn-xs" ng-click="deleteQuestion($index)">Delete question</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div ng-show="question.type == 'multi'">
+                <table class="table table-condensed">
+                    <tr ng-repeat="(i, choice) in question.choices track by $index" ng-class='{success:question.answers[$index]}'>
+                        <td width="5%">{{$index | indexToCharacter}}</td>
+                        <td><input class="form-control input-sm" ng-model="question.choices[$index]" /></td>
+                        <td>
+                            <div style="float:right;">
+                                <button class="btn btn-default btn-xs" ng-click="setMultiReverseAnswer(questionIndex, $index)">True/False</button>
+                                <button class="btn btn-default btn-xs" ng-click="deleteChoice(questionIndex, $index)">Delete choice</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td>
+                            <div style="float:right;">
+                                <button class="btn btn-default btn-xs" ng-click="addChoice(questionIndex)">Add choice</button> <button ng-show="questions.length > 1" class="btn btn-danger btn-xs" ng-click="deleteQuestion($index)">Delete question</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div ng-show="question.type == 'input'">
+                Answer:<input class="form-control" ng-model="question.inputAnswer" />
+                <div style="float:right;">
+                    <button class="btn btn-danger btn-xs" ng-show="questions.length > 1" ng-click="deleteQuestion($index)">Delete question</button>
+                </div>
+            </div>
+
+            <hr />
+        </div>
+
+        <div style="float:right;">
+            <button class="btn btn-primary" ng-click="addQuestion()">Append question</button>
+            <button class="btn btn-primary" ng-click="saveQuiz()">Upload</button>
+        </div>
+
+    </div>
+
+    <div style="width:500px;position:absolutely;margin-left:auto;margin-right:auto;" ng-show="step==2">
+        <h3>Quiz Preview</h3>
+        <table class="table table-condensed">
+            <thead>
+            <th>#</th>
+            <th>Question</th>
+            <th>Answer</th>
+            </thead>
+            <tr ng-repeat="question in questions" ng-init="questionIndex = $index">
+                <td>{{$index+1}}</td>
+                <td>{{question.description}}</td>
+                <td ng-show="question.type!='input'">
+                    <div ng-repeat="choice in question.choices">
+                        <span ng-show="questions[questionIndex].answers[$index]==true">[</span>{{choice}}<span ng-show="questions[questionIndex].answers[$index]==true">]</span>
+                    </div>
+                </td>
+                <td ng-show="question.type=='input'">{{question.inputAnswer}}</td>
+            </tr>
+        </table>
+
+        <div style="float:right;">
+            <button class="btn btn-default" ng-click="step=1">Back</button>
+            <button class="btn btn-primary" ng-click="step=1">Upload</button>
+        </div>
+
+    </div>
+
+</body>
+</html>
